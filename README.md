@@ -122,7 +122,7 @@ Then reload your shell:
 source ~/.zshrc
 ```
 
-That's it. The workflow reads `PAGESPEED_API_KEY` from the environment automatically — no changes to any files required. Run the audit normally and the PageSpeed section will be populated with real scores.
+That's it. The audit agent passes `$PAGESPEED_API_KEY` directly to the shell command that runs the PageSpeed module — no changes to any files required. Run the audit normally and the PageSpeed section will be populated with real scores.
 
 ---
 
