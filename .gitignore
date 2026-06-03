@@ -1,0 +1,12 @@
+# Crawl cache and generated reports
+.audit-cache/
+output/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+
+# uv
+.python-version
