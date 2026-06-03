@@ -106,36 +106,23 @@ The PageSpeed section requires a free Google API key.
 5. Go to **APIs & Services → Credentials → Create Credentials → API key**
 6. Copy the key
 
-The PageSpeed Insights API is free with a quota of 25,000 requests/day — more than enough for any audit.
+The PageSpeed Insights API is free with a quota of 25,000 requests/day.
 
-### 2. Add the key to the workflow
+### 2. Set the environment variable
 
-Open `.claude/workflows/seo-audit.js` and add your key as a constant near the top of the config section:
+Add it to your shell profile (`~/.zshrc`, `~/.bashrc`, or equivalent):
 
-```js
-const ROOT = '/your/path/to/seo-agent'
-const CACHE = `${ROOT}/.audit-cache`
-const OUTPUT_DIR = `${ROOT}/output`
-const PAGESPEED_API_KEY = 'YOUR_API_KEY_HERE'   // ← add this line
+```bash
+export PAGESPEED_API_KEY="your_key_here"
 ```
 
-Then pass it through to the `analyze pagespeed` command. Find the `analyze:pagespeed` agent call in the workflow (inside the `parallel` block in Phase 3) and update it:
+Then reload your shell:
 
-```js
-cd ${ROOT} && uv run python audit.py analyze pagespeed \
-  --crawl-data ${CACHE}/crawl.json \
-  --output-dir ${CACHE} \
-  --pagespeed-key ${PAGESPEED_API_KEY} 2>&1
+```bash
+source ~/.zshrc
 ```
 
-Now run the audit normally — the PageSpeed section will be populated with real scores and failing audit data.
-
-> **Security note:** The API key is stored in the workflow script which is not committed if you add it to `.gitignore`. Add this line to your `.gitignore` to be safe if you fork or share the repo:
-> ```
-> # Local config with API keys
-> .claude/workflows/seo-audit.local.js
-> ```
-> Alternatively, set it as an environment variable and read it with `process.env.PAGESPEED_API_KEY` in the workflow.
+That's it. The workflow reads `PAGESPEED_API_KEY` from the environment automatically — no changes to any files required. Run the audit normally and the PageSpeed section will be populated with real scores.
 
 ---
 

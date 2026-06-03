@@ -17,6 +17,7 @@ export const meta = {
 const ROOT = '/Users/user/Downloads/LifeOS/PROJECTS/SEO/seo-agent'
 const CACHE = `${ROOT}/.audit-cache`
 const OUTPUT_DIR = `${ROOT}/output`
+const PAGESPEED_API_KEY = process.env.PAGESPEED_API_KEY || ''
 
 // Accept args as an object, a JSON-stringified object, or a bare URL string.
 let a = args
@@ -98,7 +99,7 @@ await parallel(analyzeModules.map(mod => () =>
   agent(
     `Run this command and report the key findings count:
 
-cd ${ROOT} && uv run python audit.py analyze ${mod} --crawl-data ${CACHE}/crawl.json --output-dir ${CACHE} 2>&1`,
+cd ${ROOT} && uv run python audit.py analyze ${mod} --crawl-data ${CACHE}/crawl.json --output-dir ${CACHE} ${mod === 'pagespeed' && PAGESPEED_API_KEY ? `--pagespeed-key ${PAGESPEED_API_KEY}` : ''} 2>&1`,
     { label: `analyze:${mod}`, phase: 'Analyze' }
   )
 ))
